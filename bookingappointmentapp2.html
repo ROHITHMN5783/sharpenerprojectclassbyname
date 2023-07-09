@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Appointment App</title>
+    <style>
+        input,
+        button {
+            width: 150px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="Name">Name</label>
+    <input type="text" class="class1" placeholder="Name" required>
+    <label for="Email">Email</label>
+    <input type="text" class="class2" placeholder="Email" required>
+    <label for="Phone">Phone</label>
+    <input type="number" class="class3" placeholder="Phone" required>
+    <button class="js-button" value="submit" onclick="display1();">Submit</button>
+    <p class="para1-ans"></p>
+
+    <script>
+        const obj1 = {
+            name: 'rohith m n',
+            email: 'rohithmn41@gmail.com',
+            phone: '6361023833'
+        }
+        localStorage.setItem('obj1', JSON.stringify(obj1));
+        const element = JSON.parse(localStorage.getItem('obj1'));
+        console.log(element);
+        function display1() {
+            let input1 = document.querySelector('.class1');
+            let input2 = document.querySelector('.class2');
+            let input3 = document.querySelector('.class3');
+
+            let name = input1.value;
+            let email = input2.value;
+            let phone = input3.value;
+            document.querySelector(".para1-ans").innerHTML = `Name:${name},Email:${email},Phone:${phone}`;
+
+            obj1.name = name;
+            obj1.email = email;
+            obj1.phone = phone;
+            localStorage.setItem('obj1', JSON.stringify(obj1));
+        }
+
+    </script>
+</body>
+
+</html>
