@@ -22,17 +22,11 @@
     <label for="Phone">Phone</label>
     <input type="number" class="class3" placeholder="Phone" required>
     <button class="js-button" value="submit" onclick="display1();">Submit</button>
+    <hr>
+    <button class="js-button1" value="delete" onclick="deleted();">Delete</button>
     <p class="para1-ans"></p>
 
     <script>
-        const obj1 = {
-            name: 'rohith m n',
-            email: 'rohithmn41@gmail.com',
-            phone: '6361023833'
-        }
-        localStorage.setItem('obj1', JSON.stringify(obj1));
-        const element = JSON.parse(localStorage.getItem('obj1'));
-        console.log(element);
         function display1() {
             let input1 = document.querySelector('.class1');
             let input2 = document.querySelector('.class2');
@@ -41,14 +35,53 @@
             let name = input1.value;
             let email = input2.value;
             let phone = input3.value;
-            document.querySelector(".para1-ans").innerHTML = `Name:${name},Email:${email},Phone:${phone}`;
 
-            obj1.name = name;
-            obj1.email = email;
-            obj1.phone = phone;
-            localStorage.setItem('obj1', JSON.stringify(obj1));
+            // Retrieve existing items from localStorage or initialize as an empty array
+            let items = JSON.parse(localStorage.getItem('items')) || [];
+
+            // Add the current item to the array
+            items.push({ name, email, phone });
+
+            // Update localStorage with the updated items array
+            localStorage.setItem('items', JSON.stringify(items));
+
+            // Clear input fields
+            input1.value = '';
+            input2.value = '';
+            input3.value = '';
+
+            // Update the display in the paragraph tag
+            updateParagraph();
         }
 
+        function updateParagraph() {
+            let items = JSON.parse(localStorage.getItem('items'));
+
+            if (items && items.length > 0) {
+                let displayText = '';
+                for (let i = 0; i < items.length; i++) {
+                    displayText += `Name: ${items[i].name}, Email: ${items[i].email}, Phone: ${items[i].phone}<br>`;
+                }
+                document.querySelector(".para1-ans").innerHTML = displayText;
+            } else {
+                document.querySelector(".para1-ans").innerHTML = '';
+            }
+        }
+
+        function deleted() {
+            // Remove the last item from the items array in localStorage
+            let items = JSON.parse(localStorage.getItem('items'));
+            if (items && items.length > 0) {
+                items.pop();
+                localStorage.setItem('items', JSON.stringify(items));
+            }
+
+            // Update the display in the paragraph tag
+            updateParagraph();
+        }
+
+        // Update the paragraph display when the page loads
+        updateParagraph();
     </script>
 </body>
 
