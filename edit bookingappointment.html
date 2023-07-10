@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Appointment App</title>
+    <style>
+        input,
+        button {
+            width: 150px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="Name">Name</label>
+    <input type="text" class="class1" placeholder="Name" required>
+    <label for="Email">Email</label>
+    <input type="text" class="class2" placeholder="Email" required>
+    <label for="Phone">Phone</label>
+    <input type="number" class="class3" placeholder="Phone" required>
+    <button class="js-button" value="submit" onclick="submitForm();">Submit</button>
+    <hr>
+    <button class="js-button1" value="edit" onclick="editForm();">Edit</button>
+    <button class="js-button2" value="delete" onclick="deleteForm();">Delete</button>
+    <p class="para1-ans"></p>
+
+    <script>
+        let editingIndex = -1; // Track the index of the item being edited
+
+        function submitForm() {
+            let input1 = document.querySelector('.class1');
+            let input2 = document.querySelector('.class2');
+            let input3 = document.querySelector('.class3');
+
+            let name = input1.value;
+            let email = input2.value;
+            let phone = input3.value;
+
+            // Retrieve existing items from localStorage or initialize as an empty array
+            let items = JSON.parse(localStorage.getItem('items')) || [];
+
+            if (editingIndex !== -1) {
+                // If editing an existing item, update the item at the specified index
+                items[editingIndex] = { name, email, phone };
+                editingIndex = -1; // Reset editingIndex after updating
+            } else {
+                // If not editing, add the current item to the array
+                items.push({ name, email, phone });
+            }
+
+            // Update localStorage with the updated items array
+            localStorage.setItem('items', JSON.stringify(items));
+
+            // Clear input fields
+            input1.value = '';
+            input2.value = '';
+            input3.value = '';
+
+            // Update the display in the paragraph tag
+            updateParagraph();
+        }
+
+        function updateParagraph() {
+            let items = JSON.parse(localStorage.getItem('items'));
+
+            if (items && items.length > 0) {
+                let displayText = '';
+                for (let i = 0; i < items.length; i++) {
+                    displayText += `Name: ${items[i].name}, Email: ${items[i].email}, Phone: ${items[i].phone}<br>`;
+                }
+                document.querySelector(".para1-ans").innerHTML = displayText;
+            } else {
+                document.querySelector(".para1-ans").innerHTML = '';
+            }
+        }
+
+        function editForm() {
+            let input1 = document.querySelector('.class1');
+            let input2 = document.querySelector('.class2');
+            let input3 = document.querySelector('.class3');
+
+            let items = JSON.parse(localStorage.getItem('items'));
+
+            if (items && items.length > 0) {
+                editingIndex = items.length - 1; // Set editingIndex to the last item
+
+                let currentItem = items[editingIndex];
+                input1.value = currentItem.name;
+                input2.value = currentItem.email;
+                input3.value = currentItem.phone;
+            }
+        }
+
+        function deleteForm() {
+            let items = JSON.parse(localStorage.getItem('items'));
+            if (items && items.length > 0) {
+                items.pop();
+                localStorage.setItem('items', JSON.stringify(items));
+            }
+
+            // Update the display in the paragraph tag
+            updateParagraph();
+        }
+
+        // Update the paragraph display when the page loads
+        updateParagraph();
+    </script>
+</body>
+
+</html>
